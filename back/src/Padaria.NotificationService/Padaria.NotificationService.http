@@ -1,0 +1,6 @@
+@Padaria.NotificationService_HostAddress = http://localhost:5017
+
+GET {{Padaria.NotificationService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -1,0 +1,8 @@
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.csproj.AssemblyReference.cache
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\rpswa.dswa.cache.json
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.GeneratedMSBuildEditorConfig.editorconfig
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.AssemblyInfoInputs.cache
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.AssemblyInfo.cs
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.csproj.CoreCompileInputs.cache
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.MvcApplicationPartsAssemblyInfo.cs
+c:\Users\ITALO\Desktop\DevWeb2\Projeto\back\src\Padaria.AuthService\obj\Debug\net9.0\Padaria.AuthService.MvcApplicationPartsAssemblyInfo.cache
