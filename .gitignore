@@ -1,0 +1,71 @@
+# .gitignore para projeto Dotnet + Node + IDEs
+
+# Build outputs
+**/bin/
+**/obj/
+**/Publish/
+publish/
+
+# Rider
+.idea/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+.history/
+
+# NuGet
+packages/
+*.nupkg
+project.lock.json
+project.fragment.lock.json
+
+# ASP.NET user secrets
+secrets.json
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Node
+node_modules/
+dist/
+build/
+.next/
+.nuxt/
+out/
+coverage/
+
+# Env files
+.env
+.env.*.local
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Docker
+docker-compose.override.yml
+
+# Test results
+TestResults/
+*.trx
+
+# Misc
+*.bak
+*.tmp
+*.temp
+*.swp
+*~
