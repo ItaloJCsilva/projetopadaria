@@ -2916,11 +2916,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.AuthService\\Padaria.AuthService.csproj",
+      "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.AuthService\\Padaria.AuthService.csproj",
       "projectName": "Padaria.AuthService",
-      "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.AuthService\\Padaria.AuthService.csproj",
+      "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.AuthService\\Padaria.AuthService.csproj",
       "packagesPath": "C:\\Users\\ITALO\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.AuthService\\obj\\",
+      "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.AuthService\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ITALO\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2935,8 +2935,8 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
-              "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj"
+            "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
+              "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj"
             }
           }
         }

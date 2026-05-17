@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "TKvtxpLcDTY=",
+  "dgSpecHash": "tYfM/NMpXrw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.NotificationService\\Padaria.NotificationService.csproj",
+  "projectFilePath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.NotificationService\\Padaria.NotificationService.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ITALO\\.nuget\\packages\\masstransit\\9.1.1\\masstransit.9.1.1.nupkg.sha512",
     "C:\\Users\\ITALO\\.nuget\\packages\\masstransit.abstractions\\9.1.1\\masstransit.abstractions.9.1.1.nupkg.sha512",

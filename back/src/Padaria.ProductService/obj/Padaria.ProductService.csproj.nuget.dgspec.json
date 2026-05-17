@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj": {}
+    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj": {}
   },
   "projects": {
-    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj": {
+    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj",
+        "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj",
         "projectName": "Padaria.ProductService",
-        "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj",
+        "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.ProductService\\Padaria.ProductService.csproj",
         "packagesPath": "C:\\Users\\ITALO\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.ProductService\\obj\\",
+        "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.ProductService\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ITALO\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -26,8 +26,8 @@
           "net10.0": {
             "targetAlias": "net10.0",
             "projectReferences": {
-              "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
-                "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj"
+              "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
+                "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj"
               }
             }
           }
@@ -56,21 +56,29 @@
               "target": "Package",
               "version": "[12.0.1, )"
             },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[10.0.8, )"
+            },
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[10.0.7, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[10.0.8, )"
+              "version": "[9.0.8, )"
             },
             "Microsoft.EntityFrameworkCore.Tools": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
               "suppressParent": "All",
               "target": "Package",
-              "version": "[10.0.8, )"
+              "version": "[9.0.8, )"
             },
             "NSwag.AspNetCore": {
+              "target": "Package",
+              "version": "[14.7.1, )"
+            },
+            "NSwag.Generation": {
               "target": "Package",
               "version": "[14.7.1, )"
             },
@@ -520,14 +528,14 @@
         }
       }
     },
-    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
+    "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj",
+        "projectUniqueName": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj",
         "projectName": "Padaria.Shared",
-        "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj",
+        "projectPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\Padaria.Shared.csproj",
         "packagesPath": "C:\\Users\\ITALO\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto\\back\\src\\Padaria.Shared\\obj\\",
+        "outputPath": "C:\\Users\\ITALO\\Desktop\\DevWeb2\\Projeto2\\projetopadaria\\back\\src\\Padaria.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\ITALO\\AppData\\Roaming\\NuGet\\NuGet.Config"

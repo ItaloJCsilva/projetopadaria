@@ -1,71 +1,133 @@
-# .gitignore para projeto Dotnet + Node + IDEs
+# ─────────────────────────────────────────
+# .NET
+# ─────────────────────────────────────────
 
-# Build outputs
-**/bin/
-**/obj/
-**/Publish/
-publish/
+# Pastas de build e compilação
+bin/
+obj/
 
-# Rider
-.idea/
-
-# Visual Studio
-.vs/
-*.suo
-*.user
-*.userosscache
-*.sln.docstates
-
-# VS Code
-.vscode/
-.history/
+# Resultados de testes
+TestResults/
 
 # NuGet
-packages/
 *.nupkg
+*.snupkg
+.nuget/
+packages/
 project.lock.json
 project.fragment.lock.json
+artifacts/
 
-# ASP.NET user secrets
-secrets.json
+# Arquivos do Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.vs/
 
-# Logs
-*.log
-logs/
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# Arquivos do Rider (JetBrains)
+.idea/
+*.sln.iml
 
-# Node
-node_modules/
-dist/
-build/
-.next/
-.nuxt/
-out/
-coverage/
+# Arquivos do VS Code
+.vscode/
+!.vscode/extensions.json
+!.vscode/launch.json
+!.vscode/tasks.json
 
-# Env files
+# ─────────────────────────────────────────
+# SEGURANÇA — nunca subir para o GitHub
+# ─────────────────────────────────────────
+
+# Variáveis de ambiente e segredos
 .env
-.env.*.local
+.env.*
+*.env
+appsettings.Development.json
+appsettings.Production.json
+appsettings.Staging.json
 
-# macOS
-.DS_Store
+# Chaves e certificados
+*.pfx
+*.p12
+*.key
+*.pem
+*.cer
+*.crt
+
+# Credenciais AWS
+.aws/
+aws-credentials.json
+
+# ─────────────────────────────────────────
+# BANCO DE DADOS
+# ─────────────────────────────────────────
+
+# Arquivos locais de banco
+*.db
+*.sqlite
+*.sqlite3
+*.mdf
+*.ldf
+
+# ─────────────────────────────────────────
+# DOCKER
+# ─────────────────────────────────────────
+
+# Volumes locais do Docker (se criados na pasta do projeto)
+docker-volumes/
+mysql-data/
+
+# ─────────────────────────────────────────
+# ANGULAR (front/)
+# ─────────────────────────────────────────
+
+# Dependências do Node
+front/**/node_modules/
+
+# Build do Angular
+front/**/dist/
+front/**/.angular/
+front/**/out/
+
+# Cache
+front/**/.cache/
+
+# Logs do npm/yarn
+front/**/npm-debug.log*
+front/**/yarn-debug.log*
+front/**/yarn-error.log*
+
+# Variáveis de ambiente do Angular
+front/**/src/environments/environment.prod.ts
+
+# ─────────────────────────────────────────
+# SISTEMA OPERACIONAL
+# ─────────────────────────────────────────
 
 # Windows
 Thumbs.db
 ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
 
-# Docker
-docker-compose.override.yml
+# Mac
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
 
-# Test results
-TestResults/
-*.trx
-
-# Misc
-*.bak
-*.tmp
-*.temp
-*.swp
+# Linux
 *~
+.fuse_hidden*
+.directory
+.Trash-*
+
+# ─────────────────────────────────────────
+# LOGS
+# ─────────────────────────────────────────
+*.log
+logs/
+log/
