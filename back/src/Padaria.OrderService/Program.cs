@@ -15,7 +15,6 @@ using Padaria.OrderService.Services.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ContextoPedido>(opcoes =>
     opcoes.UseMySql(
@@ -38,38 +37,34 @@ builder.Services.AddMassTransit(x =>
         cfg.ConfigureEndpoints(ctx);
     });
 });
-
-// 5. Autenticação JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opcoes =>
     {
         opcoes.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer           = true,
-            ValidateAudience         = true,
-            ValidateLifetime         = true,
+            ValidateIssuer  = true,
+            ValidateAudience = true,
+            ValidateLifetime   = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer              = builder.Configuration["Jwt:Emissor"],
-            ValidAudience            = builder.Configuration["Jwt:Audiencia"],
-            IssuerSigningKey         = new SymmetricSecurityKey(
+            ValidIssuer = builder.Configuration["Jwt:Emissor"],
+            ValidAudience  = builder.Configuration["Jwt:Audiencia"],
+            IssuerSigningKey  = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Segredo"]!))
         };
     });
 
 builder.Services.AddAuthorization();
-
-// 6. NSwag com JWT
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(c =>
 {
-    c.Title       = "Padaria - Serviço de Pedidos";
-    c.Version     = "v1";
+    c.Title= "Padaria - Serviço de Pedidos";
+    c.Version = "v1";
     c.Description = "Criação e gerenciamento de pedidos online e do caixa";
 
     c.AddSecurity("Bearer", new NSwag.OpenApiSecurityScheme
     {
-        Type         = NSwag.OpenApiSecuritySchemeType.Http,
-        Scheme       = "bearer",
+        Type  = NSwag.OpenApiSecuritySchemeType.Http,
+        Scheme  = "bearer",
         BearerFormat = "JWT",
         Description  = "Cole apenas o token JWT, sem a palavra Bearer"
     });

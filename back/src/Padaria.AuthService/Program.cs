@@ -18,7 +18,6 @@ builder.Services.AddDbContext<ContextoAutenticacao>(opcoes =>
         ServerVersion.AutoDetect(
             builder.Configuration.GetConnectionString("Padrao"))
     ));
-
 builder.Services.AddScoped<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddScoped<IServicoAutenticacao, ServicoAutenticacao>();
 
@@ -27,13 +26,13 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     {
         opcoes.TokenValidationParameters = new TokenValidationParameters
         {
-            ValidateIssuer           = true,
-            ValidateAudience         = true,
-            ValidateLifetime         = true,
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer              = builder.Configuration["Jwt:Emissor"],
-            ValidAudience            = builder.Configuration["Jwt:Audiencia"],
-            IssuerSigningKey         = new SymmetricSecurityKey(
+            ValidIssuer = builder.Configuration["Jwt:Emissor"],
+            ValidAudience = builder.Configuration["Jwt:Audiencia"],
+            IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Segredo"]!))
         };
     });
@@ -42,13 +41,13 @@ builder.Services.AddAuthorization();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument(c =>
 {
-    c.Title       = "Padaria - Serviço de Autenticação";
-    c.Version     = "v1";
+    c.Title = "Padaria - Serviço de Autenticação";
+    c.Version = "v1";
     c.Description = "Cadastro, login e perfil de usuário";
     c.AddSecurity("Bearer", new NSwag.OpenApiSecurityScheme
     {
-        Type             = NSwag.OpenApiSecuritySchemeType.Http,
-        Scheme             = "bearer",
+        Type = NSwag.OpenApiSecuritySchemeType.Http,
+        Scheme  = "bearer",
         BearerFormat = "JWT",
         Description = "Cole apenas o token JWT"
     });
@@ -56,22 +55,18 @@ builder.Services.AddOpenApiDocument(c =>
         new AspNetCoreOperationSecurityScopeProcessor("Bearer")
     );
 });
-
 var app = builder.Build();
-
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
     app.UseSwaggerUi(c =>
     {
-        c.Path         = "/swagger";
+        c.Path = "/swagger";
         c.DocumentPath = "/swagger/v1/swagger.json";
     });
 }
-
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
-
 app.Run();

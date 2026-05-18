@@ -9,7 +9,6 @@ using Padaria.ProductService.Repositories.interfaces;
 using Padaria.ProductService.Services;
 using Padaria.ProductService.Services.interfaces;
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
