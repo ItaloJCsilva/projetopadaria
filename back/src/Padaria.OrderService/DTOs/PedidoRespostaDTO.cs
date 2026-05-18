@@ -2,20 +2,23 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Padaria.Shared.DTOS;
 using Padaria.Shared.Enums;
 
-namespace Padaria.Shared.Eventos
+namespace Padaria.OrderService.DTOs
 {
-    public class PedidoCriadoEvento
+    public class PedidoRespostaDTO
     {
-        public Guid PedidoId { get; set; }
+        public Guid Id { get; set; }
+        public Guid? UsuarioId { get; set; }
         public string NomeCliente { get; set; } = string.Empty;
         public string EmailCliente { get; set; } = string.Empty;
         public string TelefoneCliente { get; set; } = string.Empty;
         public TipoPedido Tipo { get; set; }
+        public StatusPedido Status { get; set; }
         public decimal Total { get; set; }
-        public List<ItemPedidoDTOMensagem> Itens { get; set; } = new();
+        public string? Observacoes { get; set; }
         public DateTime DataCriacao { get; set; }
+        public DateTime? DataAtualizacao { get; set; }
+        public List<ItemPedidoRespostaDTO> Itens { get; set; } = new();
     }
 }

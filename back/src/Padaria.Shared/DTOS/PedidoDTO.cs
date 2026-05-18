@@ -16,7 +16,7 @@ namespace Padaria.Shared.DTOS
         public StatusPedido Status { get; set; }
         public decimal Total { get; set; }
         public string? Observacoes { get; set; }
-        public List<ItemPedidoDTO> Itens { get; set; } = new();
+        public List<ItemPedidoDTOMensagem> Itens { get; set; } = new();
         public DateTime DataCriacao { get; set; }
     }
 }

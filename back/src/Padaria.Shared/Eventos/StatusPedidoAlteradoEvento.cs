@@ -13,6 +13,6 @@ namespace Padaria.Shared.Eventos
     public string NomeCliente { get; set; } = string.Empty;
     public StatusPedido StatusAnterior { get; set; }
     public StatusPedido NovoStatus { get; set; }
-    public DateTime DataAlteracao { get; set; }
+    public DateTime DataAtualizacao { get; set; }
     }
 }

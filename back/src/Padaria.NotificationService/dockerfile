@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+COPY Padaria.NotificationService/ Padaria.NotificationService/
+COPY Padaria.Shared/ Padaria.Shared/
+
+RUN dotnet restore "Padaria.NotificationService/Padaria.NotificationService.csproj"
+
+WORKDIR "/src/Padaria.NotificationService"
+RUN dotnet publish "Padaria.NotificationService.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Padaria.NotificationService.dll"]

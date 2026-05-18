@@ -1,0 +1,115 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: padaria-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ijcs9745
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./scripts/init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-pijcs9745"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: padaria-rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  auth-service:
+    build:
+      context: ./src
+      dockerfile: Padaria.AuthService/Dockerfile
+    container_name: padaria-auth
+    restart: always
+    ports:
+      - "5001:8080"
+    environment:
+      # Porta 3306 — comunicação interna entre containers
+      ConnectionStrings__Padrao: "Server=mysql;Port=3306;Database=padaria_autenticacao;Uid=root;Pwd=ijcs9745;"
+      Jwt__Segredo: "padaria-chave-secreta-minimo-32-caracteres-2024"
+      Jwt__Emissor: "padaria-auth"
+      Jwt__Audiencia: "padaria-app"
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  product-service:
+    build:
+      context: ./src
+      dockerfile: Padaria.ProductService/Dockerfile
+    container_name: padaria-product
+    restart: always
+    ports:
+      - "5002:8080"
+    environment:
+      ConnectionStrings__Padrao: "Server=mysql;Port=3306;Database=padaria_produtos;Uid=root;Pwd=ijcs9745;"
+      Jwt__Segredo: "padaria-chave-secreta-minimo-32-caracteres-2024"
+      Jwt__Emissor: "padaria-auth"
+      Jwt__Audiencia: "padaria-app"
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  order-service:
+    build:
+      context: ./src
+      dockerfile: Padaria.OrderService/Dockerfile
+    container_name: padaria-order
+    restart: always
+    ports:
+      - "5003:8080"
+    environment:
+      ConnectionStrings__Padrao: "Server=mysql;Port=3306;Database=padaria_pedidos;Uid=root;Pwd=ijcs9745;"
+      Jwt__Segredo: "padaria-chave-secreta-minimo-32-caracteres-2024"
+      Jwt__Emissor: "padaria-auth"
+      Jwt__Audiencia: "padaria-app"
+      RabbitMQ__Host: "rabbitmq"
+      RabbitMQ__Usuario: "guest"
+      RabbitMQ__Senha: "guest"
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: "http://+:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+
+  notification-service:
+    build:
+      context: ./src
+      dockerfile: Padaria.NotificationService/Dockerfile
+    container_name: padaria-notification
+    restart: always
+    environment:
+      RabbitMQ__Host: "rabbitmq"
+      RabbitMQ__Usuario: "guest"
+      RabbitMQ__Senha: "guest"
+      ASPNETCORE_ENVIRONMENT: Development
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+
+volumes:
+  mysql_data:

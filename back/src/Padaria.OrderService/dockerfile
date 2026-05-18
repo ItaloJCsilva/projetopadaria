@@ -1,0 +1,15 @@
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
+WORKDIR /src
+
+COPY Padaria.OrderService/ Padaria.OrderService/
+COPY Padaria.Shared/ Padaria.Shared/
+
+RUN dotnet restore "Padaria.OrderService/Padaria.OrderService.csproj"
+
+WORKDIR "/src/Padaria.OrderService"
+RUN dotnet publish "Padaria.OrderService.csproj" -c Release -o /app/publish
+
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS final
+WORKDIR /app
+COPY --from=build /app/publish .
+ENTRYPOINT ["dotnet", "Padaria.OrderService.dll"]

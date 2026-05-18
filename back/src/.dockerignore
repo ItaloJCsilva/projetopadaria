@@ -1,0 +1,4 @@
+# Ignora pastas de build locais
+**/bin/
+**/obj/
+Padaria.ApiGateway/

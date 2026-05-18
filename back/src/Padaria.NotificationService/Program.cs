@@ -1,41 +1,50 @@
+using MassTransit;
+using Padaria.NotificationService.Consumers;
+using Padaria.NotificationService.Services;
+
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
-builder.Services.AddOpenApi();
+// 1. Serviço de email
+builder.Services.AddScoped<IServicoEmail, ServicoEmail>();
+
+// 2. RabbitMQ com MassTransit
+//    Registra os consumidores e conecta no RabbitMQ
+builder.Services.AddMassTransit(x =>
+{
+    // Registra os consumidores
+    // O MassTransit cria as filas automaticamente no RabbitMQ
+    x.AddConsumer<ConsumidorPedidoCriado>();
+    x.AddConsumer<ConsumidorStatusPedidoAlterado>();
+
+    x.UsingRabbitMq((ctx, cfg) =>
+    {
+        cfg.Host(builder.Configuration["RabbitMQ:Host"], "/", h =>
+        {
+            h.Username(builder.Configuration["RabbitMQ:Usuario"]!);
+            h.Password(builder.Configuration["RabbitMQ:Senha"]!);
+        });
+
+        // Fila do evento PedidoCriadoEvento
+        // Nome da fila gerado automaticamente pelo MassTransit
+        cfg.ReceiveEndpoint("padaria-pedido-criado", e =>
+        {
+            e.ConfigureConsumer<ConsumidorPedidoCriado>(ctx);
+
+            // Se der erro no consumo tenta 3 vezes
+            // antes de mandar para a fila de erro
+            e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+        });
+
+        // Fila do evento StatusPedidoAlteradoEvento
+        cfg.ReceiveEndpoint("padaria-status-alterado", e =>
+        {
+            e.ConfigureConsumer<ConsumidorStatusPedidoAlterado>(ctx);
+            e.UseMessageRetry(r => r.Interval(3, TimeSpan.FromSeconds(5)));
+        });
+    });
+});
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.MapOpenApi();
-}
-
-app.UseHttpsRedirection();
-
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
