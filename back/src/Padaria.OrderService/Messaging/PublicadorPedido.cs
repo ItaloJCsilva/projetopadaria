@@ -15,12 +15,10 @@ namespace Padaria.OrderService.Messaging
     {
         _publicador = publicador;
     }
-    // Publica o evento quando um pedido é criado
-    // ServiçoNotificacao consome e envia email ao cliente
+
     public async Task PublicarPedidoCriadoAsync(PedidoCriadoEvento evento)
         => await _publicador.Publish(evento);
-    // Publica o evento quando o status muda
-    // Ex: de Confirmado para Pronto — avisa cliente
+
     public async Task PublicarStatusAlteradoAsync(StatusPedidoAlteradoEvento evento)
         => await _publicador.Publish(evento);
     }

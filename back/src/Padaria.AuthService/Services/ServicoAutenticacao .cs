@@ -61,12 +61,15 @@ namespace Padaria.AuthService.Services
             Email= requisicao.Email,
             SenhaHash = senhaHash,
             Telefone = requisicao.Telefone,
-            Perfil = PerfilUsuario.Administrador,
+            Perfil = PerfilUsuario.Atendente,
             DataCriacao= DateTime.UtcNow.AddHours(-3),
             Ativo = true
         };
+        Console.WriteLine($"ANTES DE SALVAR: {usuario.Perfil}");
         await _repositorio.AdicionarAsync(usuario);
+        Console.WriteLine($"DEPOIS DO AddAsync: {usuario.Perfil}");
         await _repositorio.SalvarAsync();
+        Console.WriteLine($"DEPOIS DO SaveChanges: {usuario.Perfil}");
         return MapearParaTransferencia(usuario);
     }
     public async Task<UsuarioDTO> BuscarPerfilAsync(Guid usuarioId)

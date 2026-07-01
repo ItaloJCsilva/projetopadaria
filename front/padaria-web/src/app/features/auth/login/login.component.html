@@ -1,0 +1,59 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+  <div class="card shadow-sm" style="width: 100%; max-width: 420px;">
+    <div class="card-body p-4">
+
+      <!-- Logo / Título -->
+      <div class="text-center mb-4">
+        <span style="font-size: 3rem;"></span>
+        <h2 class="fw-bold mt-2">Padaria Online</h2>
+        <p class="text-muted">Entre na sua conta</p>
+      </div>
+
+      <!-- Alerta de erro -->
+      <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
+
+      <!-- Formulário -->
+      <form [formGroup]="formulario" (ngSubmit)="entrar()">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [class.is-invalid]="email.invalid && email.touched"
+            formControlName="email"
+            placeholder="seu@email.com">
+          <div *ngIf="email.invalid && email.touched" class="invalid-feedback">Email inválido.</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            [class.is-invalid]="senha.invalid && senha.touched"
+            formControlName="senha"
+            placeholder="Mínimo 6 caracteres">
+          <div *ngIf="senha.invalid && senha.touched" class="invalid-feedback">Senha deve ter no mínimo 6 caracteres.</div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-warning w-100 fw-bold py-2"
+          [disabled]="carregando">
+          <span *ngIf="carregando" class="spinner-border spinner-border-sm me-2"></span>
+          Entrar
+        </button>
+
+      </form>
+
+      <hr>
+
+      <p class="text-center mb-0">
+        Não tem conta?
+        <a routerLink="/cadastro" class="text-warning fw-semibold">Cadastre-se</a>
+      </p>
+
+    </div>
+  </div>
+</div>

@@ -7,11 +7,25 @@ using Padaria.AuthService.Data;
 using Padaria.AuthService.Repositories.interfaces;
 using Padaria.AuthService.Repositorios;
 using Padaria.AuthService.Services;
-using Padaria.AuthService.Services.interfaces;    
-
+using Padaria.AuthService.Services.interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllers();
+
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200") // URL do seu frontend
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
+//builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opcoes =>
+        opcoes.JsonSerializerOptions.PropertyNamingPolicy = null); 
 builder.Services.AddDbContext<ContextoAutenticacao>(opcoes =>
     opcoes.UseMySql(
         builder.Configuration.GetConnectionString("Padrao"),
@@ -47,7 +61,7 @@ builder.Services.AddOpenApiDocument(c =>
     c.AddSecurity("Bearer", new NSwag.OpenApiSecurityScheme
     {
         Type = NSwag.OpenApiSecuritySchemeType.Http,
-        Scheme  = "bearer",
+        Scheme = "bearer",
         BearerFormat = "JWT",
         Description = "Cole apenas o token JWT"
     });
@@ -55,7 +69,9 @@ builder.Services.AddOpenApiDocument(c =>
         new AspNetCoreOperationSecurityScopeProcessor("Bearer")
     );
 });
+
 var app = builder.Build();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseOpenApi();
@@ -65,7 +81,10 @@ if (app.Environment.IsDevelopment())
         c.DocumentPath = "/swagger/v1/swagger.json";
     });
 }
+
 app.UseHttpsRedirection();
+app.UseCors("PermitirAngular");
+
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

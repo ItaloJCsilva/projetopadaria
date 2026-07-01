@@ -24,6 +24,17 @@ builder.Services.AddScoped<IRepositorioProduto, RepositorioProduto>();
 builder.Services.AddScoped<IServicoCategoria, ServicoCategoria>();
 builder.Services.AddScoped<IServicoProduto, ServicoProduto>();
 
+// Permite que o Angular (localhost:4200) acesse essa API
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirAngular", policy =>
+    {
+        policy.WithOrigins("http://localhost:4200")
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(opcoes =>
     {
@@ -72,6 +83,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("PermitirAngular");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

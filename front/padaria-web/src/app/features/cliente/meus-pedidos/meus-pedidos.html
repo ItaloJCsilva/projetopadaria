@@ -1,0 +1,34 @@
+<div class="container py-4">
+  <h2 class="fw-bold mb-4"> Meus Pedidos</h2>
+
+  @if (erro) { <div class="alert alert-danger">{{ erro }}</div> }
+
+  @if (carregando) {
+    <div class="spinner-border text-warning"></div>
+  } @else {
+    @if (pedidos.length === 0) {
+      <p class="text-muted">Nenhum pedido encontrado.</p>
+    } @else {
+      <div class="list-group">
+        @for (pedido of pedidos; track pedido.id) {
+          <div class="list-group-item">
+            <div class="d-flex justify-content-between">
+              <span><strong>#{{ pedido.id.slice(0,8) }}</strong> – {{ pedido.nomeCliente }}</span>
+              <span class="badge {{ getStatusClass(pedido.status) }}">{{ pedido.status }}</span>
+            </div>
+            <div class="small text-muted">
+              <span>Total: R$ {{ pedido.total.toFixed(2) }}</span>
+              <span class="ms-3">{{ pedido.criadoEm | date:'short' }}</span>
+              <span class="ms-3">Tipo: {{ pedido.tipo }}</span>
+            </div>
+            <ul class="mt-2 mb-0 small">
+              @for (item of pedido.itens; track item.id) {
+                <li>{{ item.nomeProduto }} x{{ item.quantidade }} – R$ {{ item.subtotal.toFixed(2) }}</li>
+              }
+            </ul>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>

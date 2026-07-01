@@ -1,0 +1,90 @@
+<div class="min-vh-100 d-flex align-items-center justify-content-center bg-light py-4">
+  <div class="card shadow-sm" style="width: 100%; max-width: 480px;">
+    <div class="card-body p-4">
+
+      <div class="text-center mb-4">
+        <span style="font-size: 3rem;"></span>
+        <h2 class="fw-bold mt-2">Criar Conta</h2>
+        <p class="text-muted">Preencha seus dados para se cadastrar</p>
+      </div>
+
+      <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
+      <div *ngIf="sucesso" class="alert alert-success">{{ sucesso }}</div>
+
+      <form [formGroup]="formulario" (ngSubmit)="cadastrar()">
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nome de usuário</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="nomeUsuario.invalid && nomeUsuario.touched"
+            formControlName="nomeUsuario"
+            placeholder="joaosilva">
+          <div *ngIf="nomeUsuario.invalid && nomeUsuario.touched" class="invalid-feedback">Mínimo 3 caracteres.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nome completo</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="nome.invalid && nome.touched"
+            formControlName="nome"
+            placeholder="João Silva">
+          <div *ngIf="nome.invalid && nome.touched" class="invalid-feedback">Nome obrigatório.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            [class.is-invalid]="email.invalid && email.touched"
+            formControlName="email"
+            placeholder="seu@email.com">
+          <div *ngIf="email.invalid && email.touched" class="invalid-feedback">Email inválido.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Senha</label>
+          <input
+            type="password"
+            class="form-control"
+            [class.is-invalid]="senha.invalid && senha.touched"
+            formControlName="senha"
+            placeholder="Mínimo 6 caracteres">
+          <div *ngIf="senha.invalid && senha.touched" class="invalid-feedback">Senha deve ter no mínimo 6 caracteres.</div>
+        </div>
+
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Telefone</label>
+          <input
+            type="text"
+            class="form-control"
+            [class.is-invalid]="telefone.invalid && telefone.touched"
+            formControlName="telefone"
+            placeholder="81999998888">
+          <div *ngIf="telefone.invalid && telefone.touched" class="invalid-feedback">Telefone obrigatório.</div>
+        </div>
+
+        <button
+          type="submit"
+          class="btn btn-warning w-100 fw-bold py-2"
+          [disabled]="carregando">
+          <span *ngIf="carregando" class="spinner-border spinner-border-sm me-2"></span>
+          Cadastrar
+        </button>
+
+      </form>
+
+      <hr>
+
+      <p class="text-center mb-0">
+        Já tem conta?
+        <a routerLink="/login" class="text-warning fw-semibold">Entrar</a>
+      </p>
+
+    </div>
+  </div>
+</div>

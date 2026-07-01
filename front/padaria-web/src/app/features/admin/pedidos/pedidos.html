@@ -1,0 +1,39 @@
+<div class="container py-4">
+  <h2 class="fw-bold mb-4"> Gerenciar Pedidos</h2>
+
+  @if (erro) { <div class="alert alert-danger">{{ erro }}</div> }
+
+  @if (carregando) {
+    <div class="spinner-border text-warning"></div>
+  } @else {
+    <div class="list-group">
+      @for (pedido of pedidos; track pedido.id) {
+        <div class="list-group-item">
+          <div class="d-flex justify-content-between align-items-center">
+            <div>
+              <strong>#{{ pedido.id.slice(0,8) }}</strong> – {{ pedido.nomeCliente }}
+              <span class="badge {{ getStatusClass(pedido.status) }} ms-2">{{ pedido.status }}</span>
+            </div>
+            <div>
+              <select class="form-select form-select-sm" (change)="atualizarStatus(pedido.id, $any($event.target).value)">
+                <option value="Pendente" [selected]="pedido.status === 'Pendente'">Pendente</option>
+                <option value="Confirmado" [selected]="pedido.status === 'Confirmado'">Confirmado</option>
+                <option value="Pronto" [selected]="pedido.status === 'Pronto'">Pronto</option>
+                <option value="Concluido" [selected]="pedido.status === 'Concluido'">Concluído</option>
+                <option value="Cancelado" [selected]="pedido.status === 'Cancelado'">Cancelado</option>
+              </select>
+            </div>
+          </div>
+          <div class="small text-muted">
+            Total: R$ {{ pedido.total.toFixed(2) }} | {{ pedido.criadoEm | date:'short' }} | Tipo: {{ pedido.tipo }}
+          </div>
+          <ul class="mt-2 mb-0 small">
+            @for (item of pedido.itens; track item.id) {
+              <li>{{ item.nomeProduto }} x{{ item.quantidade }} – R$ {{ item.subtotal.toFixed(2) }}</li>
+            }
+          </ul>
+        </div>
+      }
+    </div>
+  }
+</div>

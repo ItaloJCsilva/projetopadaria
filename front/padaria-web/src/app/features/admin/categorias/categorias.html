@@ -1,0 +1,45 @@
+<div class="container py-4">
+  <h2 class="fw-bold mb-4"> Gerenciar Categorias</h2>
+
+  @if (erro) { <div class="alert alert-danger">{{ erro }}</div> }
+  @if (sucesso) { <div class="alert alert-success">{{ sucesso }}</div> }
+
+  <div class="card shadow-sm mb-4">
+    <div class="card-body">
+      <h5>{{ editandoId ? 'Editar' : 'Nova' }} Categoria</h5>
+      <form [formGroup]="formulario" (ngSubmit)="salvar()">
+        <div class="row g-3">
+          <div class="col-md-4">
+            <label class="form-label">Nome</label>
+            <input type="text" class="form-control" formControlName="nome">
+          </div>
+          <div class="col-md-6">
+            <label class="form-label">Descrição</label>
+            <input type="text" class="form-control" formControlName="descricao">
+          </div>
+          <div class="col-md-2 d-flex align-items-end">
+            <button type="submit" class="btn btn-warning fw-bold">{{ editandoId ? 'Atualizar' : 'Criar' }}</button>
+            @if (editandoId) {
+              <button type="button" class="btn btn-outline-secondary ms-2" (click)="cancelar()">Cancelar</button>
+            }
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <ul class="list-group">
+    @for (cat of categorias; track cat.id) {
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ cat.nome }}</strong> – {{ cat.descricao }}
+          <span class="badge bg-secondary ms-2">{{ cat.ativa ? 'Ativa' : 'Inativa' }}</span>
+        </div>
+        <div>
+          <button class="btn btn-sm btn-outline-primary me-1" (click)="editar(cat)">✏️</button>
+          <button class="btn btn-sm btn-outline-danger" (click)="excluir(cat.id)">🗑️</button>
+        </div>
+      </li>
+    }
+  </ul>
+</div>

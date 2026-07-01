@@ -21,7 +21,7 @@ namespace Padaria.NotificationService.Services
             decimal total)
         {
             _logger.LogInformation(
-                "📧 Email enviado para {Email} — Pedido {PedidoId} confirmado. Total: R$ {Total}",
+                "Email enviado para {Email} — Pedido {PedidoId} confirmado. Total: R$ {Total}",
                 emailDestino,
                 pedidoId,
                 total);
