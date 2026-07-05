@@ -9,4 +9,5 @@ export interface Produto {
   categoriaId: string;
   nomeCategoria: string;
   criadoEm: string;
+  
 }

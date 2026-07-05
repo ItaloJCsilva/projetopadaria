@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Padaria.AuthService.Models;
-// Interface do repositório — define o contrato.
-// O Serviço depende dessa interface, não da implementação.
-// Isso facilita testes e troca de banco futuramente.
 namespace Padaria.AuthService.Repositories.interfaces
 {
     public interface IRepositorioUsuario

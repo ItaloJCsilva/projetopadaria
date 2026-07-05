@@ -65,13 +65,24 @@ namespace Padaria.OrderService.Controllers
             }
         }
         [HttpPost]
+        [Authorize]
         public async Task<IActionResult> Criar([FromBody] CriarPedidoDTO requisicao)
         {
             try
             {
-                var pedido = await _servico.CriarAsync(requisicao);
-                return CreatedAtAction(nameof(BuscarPorId),
-                    new { id = pedido.Id }, pedido);
+                var idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+                if (idUsuario == null)
+                    return Unauthorized();
+
+                var pedido = await _servico.CriarAsync(
+                    requisicao,
+                    Guid.Parse(idUsuario));
+
+                return CreatedAtAction(
+                    nameof(BuscarPorId),
+                    new { id = pedido.Id },
+                    pedido);
             }
             catch (InvalidOperationException ex)
             {
@@ -98,24 +109,80 @@ namespace Padaria.OrderService.Controllers
                 return BadRequest(new { mensagem = ex.Message });
             }
         }
-        [HttpDelete("{id:guid}")]
-        [Authorize]
-        public async Task<IActionResult> Cancelar(Guid id)
+        // [HttpPut("{id:guid}/concluir")]
+        // [Authorize]
+        // public async Task<IActionResult> Concluir(Guid id)
+        // {
+        //     try
+        //     {
+        //         var idUsuario = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+        //         if (idUsuario == null)
+        //             return Unauthorized();
+
+        //         await _servico.ConcluirAsync(
+        //             id,
+        //             Guid.Parse(idUsuario));
+
+        //         return NoContent();
+        //     }
+        //     catch (KeyNotFoundException ex)
+        //     {
+        //         return NotFound(new { mensagem = ex.Message });
+        //     }
+        //     catch (UnauthorizedAccessException )
+        //     {
+        //         return Forbid();
+        //     }
+        //     catch (InvalidOperationException ex)
+        //     {
+        //         return BadRequest(new { mensagem = ex.Message });
+        //     }
+        // }
+        // [HttpDelete("{id:guid}")]
+        // [Authorize]
+        // public async Task<IActionResult> Cancelar(Guid id)
+        // {
+        //     try
+        //     {
+        //         await _servico.CancelarAsync(id);
+        //         return NoContent();
+        //     }
+        //     catch (KeyNotFoundException ex)
+        //     {
+        //         return NotFound(new { mensagem = ex.Message });
+        //     }
+        //     catch (InvalidOperationException ex)
+        //     {
+        //         return BadRequest(new { mensagem = ex.Message });
+        //     }
+        // }
+        [HttpGet("ativos")]
+        [Authorize(Roles = "Administrador,Atendente")]
+        public async Task<IActionResult> ListarAtivos()
         {
-            try
-            {
-                await _servico.CancelarAsync(id);
-                return NoContent();
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { mensagem = ex.Message });
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { mensagem = ex.Message });
-            }
+            var pedidos = await _servico.ListarAtivosAsync();
+
+            return Ok(pedidos);
         }
+        // [HttpPut("{id:guid}/confirmar")]
+        // [Authorize(Roles = "Administrador,Atendente")]
+        // public async Task<IActionResult> Confirmar(Guid id)
+        // {
+        //     try
+        //     {
+        //         await _servico.ConfirmarAsync(id);
+        //         return NoContent();
+        //     }
+        //     catch (KeyNotFoundException ex)
+        //     {
+        //         return NotFound(new { mensagem = ex.Message });
+        //     }
+        //     catch (InvalidOperationException ex)
+        //     {
+        //         return BadRequest(new { mensagem = ex.Message });
+        //     }
+        // }
     
     }
 }

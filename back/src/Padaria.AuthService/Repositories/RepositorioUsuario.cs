@@ -1,7 +1,3 @@
-// O using do Microsoft.EntityFrameworkCore é obrigatório
-// para ter acesso aos métodos assíncronos:
-// FirstOrDefaultAsync, AnyAsync, AddAsync, SaveChangesAsync
-// Sem ele o compilador não encontra esses métodos de extensão
 using Microsoft.EntityFrameworkCore;
 using Padaria.AuthService.Data;
 using Padaria.AuthService.Models;

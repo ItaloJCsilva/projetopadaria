@@ -22,6 +22,8 @@ export class Produtos {
   carregando = false;
   erro = '';
   sucesso = '';
+  selectedFile: File | null = null;
+  previewUrl: string | null = null;
 
   constructor(
     private produtoService: ProdutoService,
@@ -33,7 +35,6 @@ export class Produtos {
       descricao: ['', Validators.required],
       preco: [0, [Validators.required, Validators.min(0.01)]],
       estoque: [0, [Validators.required, Validators.min(0)]],
-      urlImagem: [''],
       categoriaId: ['', Validators.required],
       disponivel: [true]
     });
@@ -57,50 +58,70 @@ export class Produtos {
   editar(produto: Produto): void {
     this.editandoId = produto.id;
     this.formulario.patchValue({
-      nome: produto.nome,
-      descricao: produto.descricao,
-      preco: produto.preco,
-      estoque: produto.estoque,
-      urlImagem: produto.urlImagem,
-      categoriaId: produto.categoriaId,
-      disponivel: produto.disponivel
+    nome: produto.nome,
+    descricao: produto.descricao,
+    preco: produto.preco,
+    estoque: produto.estoque,
+    categoriaId: produto.categoriaId,
+    disponivel: produto.disponivel
     });
+    this.previewUrl = produto.urlImagem;
   }
 
   cancelarEdicao(): void {
+
     this.editandoId = null;
-    this.formulario.reset({ disponivel: true });
+
+    this.selectedFile = null;
+
+    this.previewUrl = null;
+
+    this.formulario.reset({
+        disponivel: true
+    });
+
     this.erro = '';
     this.sucesso = '';
-  }
+}
 
   salvar(): void {
-    if (this.formulario.invalid) {
-      this.formulario.markAllAsTouched();
-      return;
-    }
+  if (this.formulario.invalid) return;
 
-    const dados = this.formulario.value as CriarProdutoRequisicao;
-    this.carregando = true;
-    this.erro = '';
+  const formData = new FormData();
 
-    const operacao = this.editandoId
-      ? this.produtoService.atualizar(this.editandoId, { ...dados, disponivel: this.formulario.value.disponivel } as any)
-      : this.produtoService.criar(dados);
+  formData.append('nome', this.formulario.value.nome);
+  formData.append('descricao', this.formulario.value.descricao);
+  formData.append('preco', this.formulario.value.preco);
+  formData.append('estoque', this.formulario.value.estoque);
+  formData.append('categoriaId', this.formulario.value.categoriaId);
+  formData.append(
+    'disponivel',
+    this.formulario.value.disponivel ? 'true' : 'false'
+);
 
-    operacao.subscribe({
-      next: () => {
-        this.sucesso = this.editandoId ? 'Produto atualizado!' : 'Produto criado!';
-        this.carregarDados();
-        this.cancelarEdicao();
-        this.carregando = false;
-      },
-      error: (err) => {
-        this.erro = err.error?.mensagem || 'Erro ao salvar produto.';
-        this.carregando = false;
-      }
-    });
+  if (this.selectedFile) {
+    formData.append('imagem', this.selectedFile);
   }
+
+  this.carregando = true;
+
+  const operacao = this.editandoId
+    ? this.produtoService.atualizarComImagem(this.editandoId, this.formulario.value)
+    : this.produtoService.criarComImagem(formData);
+
+  operacao.subscribe({
+    next: () => {
+      this.sucesso = this.editandoId ? 'Produto atualizado!' : 'Produto criado!';
+      this.carregarDados();
+      this.cancelarEdicao();
+      this.carregando = false;
+    },
+    error: () => {
+      this.erro = 'Erro ao salvar produto';
+      this.carregando = false;
+    }
+  });
+}
 
   excluir(id: string): void {
     if (!confirm('Tem certeza que deseja excluir este produto?')) return;
@@ -112,5 +133,20 @@ export class Produtos {
       error: () => this.erro = 'Erro ao excluir produto.'
     });
   }
+  onFileSelected(event: any): void {
+  const file = event.target.files[0];
+
+  if (!file) return;
+
+  this.selectedFile = file;
+
+  const reader = new FileReader();
+  reader.onload = () => {
+    this.previewUrl = reader.result as string;
+  };
+
+  reader.readAsDataURL(file);
+}
+
 
 }

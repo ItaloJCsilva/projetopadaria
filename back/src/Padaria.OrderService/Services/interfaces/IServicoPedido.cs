@@ -13,8 +13,14 @@ namespace Padaria.OrderService.Services.interfaces
         Task<List<PedidoRespostaDTO>> ListarPorUsuarioAsync(Guid usuarioId);
         Task<List<PedidoRespostaDTO>> ListarPorStatusAsync(StatusPedido status);
         Task<PedidoRespostaDTO> BuscarPorIdAsync(Guid id);
-        Task<PedidoRespostaDTO> CriarAsync(CriarPedidoDTO requisicao);
+        Task<PedidoRespostaDTO> CriarAsync(
+            CriarPedidoDTO requisicao,
+            Guid usuarioId);
         Task<PedidoRespostaDTO> AtualizarStatusAsync(Guid id, AtualizarStatusDTO requisicao);
-        Task CancelarAsync(Guid id);
+        // Task CancelarAsync(Guid id);
+
+        // Task ConcluirAsync(Guid pedidoId, Guid usuarioId);
+        Task<List<PedidoRespostaDTO>> ListarAtivosAsync();
+        // Task ConfirmarAsync(Guid id);
     }
 }

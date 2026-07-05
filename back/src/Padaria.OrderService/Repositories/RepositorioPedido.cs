@@ -50,5 +50,19 @@ namespace Padaria.OrderService.Repositories
         }
         public async Task SalvarAsync()
             => await _contexto.SaveChangesAsync();
+        
+        
+        public async Task<List<Pedido>> ListarAtivosAsync()
+        {
+            return await _contexto.Pedidos
+                .Include(p => p.Itens)
+                .Where(p =>
+                    p.Status != StatusPedido.Concluido)
+                .OrderBy(p => p.DataCriacao)
+                .ToListAsync();
         }
+
+        
+    }
+        
 }

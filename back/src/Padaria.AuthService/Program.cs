@@ -16,16 +16,15 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirAngular", policy =>
     {
-        policy.WithOrigins("http://localhost:4200") // URL do seu frontend
+        policy.WithOrigins("http://localhost:4200")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });
 });
-
-//builder.Services.AddControllers();
 builder.Services.AddControllers()
     .AddJsonOptions(opcoes =>
-        opcoes.JsonSerializerOptions.PropertyNamingPolicy = null); 
+        opcoes.JsonSerializerOptions.PropertyNamingPolicy = 
+            System.Text.Json.JsonNamingPolicy.CamelCase); 
 builder.Services.AddDbContext<ContextoAutenticacao>(opcoes =>
     opcoes.UseMySql(
         builder.Configuration.GetConnectionString("Padrao"),
@@ -48,6 +47,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidAudience = builder.Configuration["Jwt:Audiencia"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Segredo"]!))
+            ,
+            RoleClaimType = System.Security.Claims.ClaimTypes.Role,
+            ClockSkew = System.TimeSpan.Zero
         };
     });
 

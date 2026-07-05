@@ -28,14 +28,51 @@ export class MeusPedidos implements OnInit {
     });
   }
 
-  getStatusClass(status: string): string {
-    const map: Record<string, string> = {
-      'Pendente': 'bg-warning',
-      'Confirmado': 'bg-info',
-      'Pronto': 'bg-primary',
-      'Concluido': 'bg-success',
-      'Cancelado': 'bg-danger'
-    };
-    return map[status] || 'bg-secondary';
+    getStatusClass(status: string): string {
+
+      switch (status) {
+
+          case 'Pendente':
+              return 'bg-warning';
+
+          case 'Pronto':
+              return 'bg-primary';
+
+          case 'Concluido':
+              return 'bg-success';
+
+          default:
+              return 'bg-secondary';
+      }
+
+  }
+  concluirPedido(id: string): void {
+    const confirmar = confirm(
+      'Você confirma que recebeu este pedido?'
+    );
+
+    if (!confirmar) {
+      return;
+    }
+
+    this.pedidoService.atualizarStatus(
+    id,
+    {
+        novoStatus: 'Concluido'
+    }
+    )
+    .subscribe({
+        next: () => {
+            alert('Pedido concluído!');
+            this.carregar();
+        },
+        error: erro => {
+            alert(
+                erro.error?.mensagem ??
+                'Erro ao concluir.'
+            );
+        }
+    });
+
   }
 }

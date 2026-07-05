@@ -2,7 +2,6 @@
 
   <h2 class="fw-bold mb-4">Nosso Cardápio</h2>
 
-  <!-- Filtro de categorias -->
   <div class="d-flex gap-2 mb-4 flex-wrap">
     <button
       class="btn btn-sm"
@@ -29,7 +28,6 @@
     </div>
   }
 
-  <!-- Grid de produtos -->
   @if (!carregando) {
     <div class="row g-4">
       @for (produto of produtos; track produto.id) {

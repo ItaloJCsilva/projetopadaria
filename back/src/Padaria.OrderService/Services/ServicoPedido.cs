@@ -48,7 +48,9 @@ namespace Padaria.OrderService.Services
 
             return MapearParaResposta(pedido);
         }
-        public async Task<PedidoRespostaDTO> CriarAsync(CriarPedidoDTO requisicao)
+        public async Task<PedidoRespostaDTO> CriarAsync(
+            CriarPedidoDTO requisicao,
+            Guid usuarioId)
         {
             if (!requisicao.Itens.Any())
                 throw new InvalidOperationException("O pedido deve ter pelo menos um item.");
@@ -67,7 +69,7 @@ namespace Padaria.OrderService.Services
             var pedido = new Pedido
             {
                 Id = Guid.NewGuid(),
-                UsuarioId = requisicao.UsuarioId,
+                UsuarioId = usuarioId,
                 NomeCliente = requisicao.NomeCliente,
                 EmailCliente = requisicao.EmailCliente,
                 TelefoneCliente = requisicao.TelefoneCliente,
@@ -103,50 +105,75 @@ namespace Padaria.OrderService.Services
         }
     public async Task<PedidoRespostaDTO> AtualizarStatusAsync(
         Guid id,
-        AtualizarStatusDTO requisicao)
+        AtualizarStatusDTO dto)
     {
         var pedido = await _repositorio.BuscarPorIdAsync(id);
-        if (pedido is null)
+
+        if (pedido == null)
             throw new KeyNotFoundException("Pedido não encontrado.");
-        if (pedido.Status == StatusPedido.Cancelado ||
-            pedido.Status == StatusPedido.Concluido)
-            throw new InvalidOperationException(
-                "Não é possível alterar o status de um pedido finalizado.");
+
+        switch (dto.NovoStatus)
+        {
+            case StatusPedido.Pendente:
+
+                throw new InvalidOperationException(
+                    "Não é possível voltar para Pendente.");
+
+            case StatusPedido.Pronto:
+
+                if (pedido.Status != StatusPedido.Pendente)
+                    throw new InvalidOperationException(
+                        "Somente pedidos pendentes podem ficar prontos.");
+
+                break;
+
+            case StatusPedido.Concluido:
+
+                if (pedido.Status != StatusPedido.Pronto)
+                    throw new InvalidOperationException(
+                        "Somente pedidos prontos podem ser concluídos.");
+
+                break;
+        }
 
         var statusAnterior = pedido.Status;
-        pedido.Status       = requisicao.NovoStatus;
+
+        pedido.Status = dto.NovoStatus;
         pedido.DataAtualizacao = DateTime.UtcNow;
+
         await _repositorio.AtualizarAsync(pedido);
         await _repositorio.SalvarAsync();
-        await _publicador.PublicarStatusAlteradoAsync(new StatusPedidoAlteradoEvento
-        {
-            PedidoId = pedido.Id,
-            EmailCliente = pedido.EmailCliente,
-            NomeCliente = pedido.NomeCliente,
-            StatusAnterior = statusAnterior,
-            NovoStatus = pedido.Status,
-            DataAtualizacao  = DateTime.UtcNow
-        });
+
+        await _publicador.PublicarStatusAlteradoAsync(
+            new StatusPedidoAlteradoEvento
+            {
+                PedidoId = pedido.Id,
+                NomeCliente = pedido.NomeCliente,
+                EmailCliente = pedido.EmailCliente,
+                StatusAnterior = statusAnterior,
+                NovoStatus = pedido.Status,
+                DataAtualizacao = DateTime.UtcNow
+            });
 
         return MapearParaResposta(pedido);
     }
 
-    public async Task CancelarAsync(Guid id)
-    {
-        var pedido = await _repositorio.BuscarPorIdAsync(id);
-        if (pedido is null)
-            throw new KeyNotFoundException("Pedido não encontrado.");
+    // public async Task CancelarAsync(Guid id)
+    // {
+    //     var pedido = await _repositorio.BuscarPorIdAsync(id);
+    //     if (pedido is null)
+    //         throw new KeyNotFoundException("Pedido não encontrado.");
 
-        if (pedido.Status == StatusPedido.Concluido)
-            throw new InvalidOperationException(
-                "Não é possível cancelar um pedido já concluído.");
+    //     if (pedido.Status == StatusPedido.Concluido)
+    //         throw new InvalidOperationException(
+    //             "Não é possível cancelar um pedido já concluído.");
 
-        pedido.Status       = StatusPedido.Cancelado;
-        pedido.DataAtualizacao = DateTime.UtcNow;
+    //     pedido.Status       = StatusPedido.Cancelado;
+    //     pedido.DataAtualizacao = DateTime.UtcNow;
 
-        await _repositorio.AtualizarAsync(pedido);
-        await _repositorio.SalvarAsync();
-    }
+    //     await _repositorio.AtualizarAsync(pedido);
+    //     await _repositorio.SalvarAsync();
+    // }
 
     private PedidoRespostaDTO MapearParaResposta(Pedido pedido)
         => new()
@@ -172,5 +199,63 @@ namespace Padaria.OrderService.Services
                 Subtotal = i.Subtotal
             }).ToList()
         };
+        // public async Task ConcluirAsync(Guid pedidoId, Guid usuarioId)
+        // {
+        //     var pedido = await _repositorio.BuscarPorIdAsync(pedidoId);
+
+        //     if (pedido == null)
+        //         throw new KeyNotFoundException("Pedido não encontrado.");
+
+        //     if (pedido.Status != StatusPedido.Pronto)
+        //         throw new InvalidOperationException("Somente pedidos prontos podem ser concluídos.");
+
+        //     pedido.Status = StatusPedido.Concluido;
+        //     pedido.DataAtualizacao = DateTime.UtcNow;
+
+        //     await _repositorio.AtualizarAsync(pedido);
+        //     await _repositorio.SalvarAsync();
+
+        //     await _publicador.PublicarPedidoConcluidoAsync(new PedidoConcluidoEvento
+        //     {
+        //         PedidoId = pedido.Id,
+        //         UsuarioId = pedido.UsuarioId,
+        //         NomeCliente = pedido.NomeCliente,
+        //         EmailCliente = pedido.EmailCliente,
+        //         TelefoneCliente = pedido.TelefoneCliente,
+        //         Total = pedido.Total,
+        //         DataConclusao = DateTime.UtcNow,
+        //         Itens = pedido.Itens.Select(i => new ItemPedidoDTOMensagem
+        //         {
+        //             ProdutoId = i.ProdutoId,
+        //             NomeProduto = i.NomeProduto,
+        //             Quantidade = i.Quantidade,
+        //             PrecoUnitario = i.PrecoUnitario
+        //         }).ToList()
+        //     });
+        // }
+        public async Task<List<PedidoRespostaDTO>> ListarAtivosAsync()
+        {
+            var pedidos = await _repositorio.ListarAtivosAsync();
+
+            return pedidos
+                .Select(MapearParaResposta)
+                .ToList();
+        }
+        // public async Task ConfirmarAsync(Guid id)
+        // {
+        //     var pedido = await _repositorio.BuscarPorIdAsync(id);
+
+        //     if (pedido is null)
+        //         throw new KeyNotFoundException("Pedido não encontrado.");
+
+        //     if (pedido.Status != StatusPedido.Pendente)
+        //         throw new InvalidOperationException("Somente pedidos pendentes podem ser confirmados.");
+
+        //     pedido.Status = StatusPedido.Confirmado;
+        //     pedido.DataAtualizacao = DateTime.UtcNow;
+
+        //     await _repositorio.AtualizarAsync(pedido);
+        //     await _repositorio.SalvarAsync();
+        // }
     }
 }

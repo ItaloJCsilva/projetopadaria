@@ -18,10 +18,8 @@ export class Estoque implements OnInit {
   erro = '';
   sucesso = '';
 
-  // Controle de edição: armazena o id do produto que está sendo editado
   editandoId: string | null = null;
 
-  // Cópia dos valores para edição
   precoEdit: number = 0;
   estoqueEdit: number = 0;
 
@@ -45,7 +43,6 @@ export class Estoque implements OnInit {
     });
   }
 
-  // Inicia a edição de um produto
   iniciarEdicao(produto: Produto): void {
     this.editandoId = produto.id;
     this.precoEdit = produto.preco;
@@ -61,7 +58,6 @@ export class Estoque implements OnInit {
 
   // Salva as alterações (preço e estoque)
   salvarEdicao(produto: Produto): void {
-    // Validações básicas
     if (this.precoEdit <= 0) {
       this.erro = 'Preço deve ser maior que zero.';
       return;
@@ -75,7 +71,6 @@ export class Estoque implements OnInit {
     this.erro = '';
     this.sucesso = '';
 
-    // Monta o objeto de atualização
     const dadosAtualizados = {
       nome: produto.nome,
       descricao: produto.descricao,
@@ -88,7 +83,6 @@ export class Estoque implements OnInit {
 
     this.produtoService.atualizar(produto.id, dadosAtualizados).subscribe({
       next: (produtoAtualizado: Produto) => {
-        // Atualiza a lista local
         const index = this.produtos.findIndex(p => p.id === produto.id);
         if (index !== -1) {
           this.produtos[index] = produtoAtualizado;
@@ -104,7 +98,6 @@ export class Estoque implements OnInit {
     });
   }
 
-  // Apenas para exibir o status de disponibilidade
   getStatusLabel(disponivel: boolean): string {
     return disponivel ? 'Ativo' : 'Inativo';
   }

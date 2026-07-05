@@ -1,1 +1,178 @@
-<p>painel-caixa works!</p>
+<h2 class="mb-3">Caixa de Atendimento</h2>
+
+<div *ngIf="erro" class="alert alert-danger">
+  {{ erro }}
+</div>
+
+<div *ngIf="sucesso" class="alert alert-success">
+  {{ sucesso }}
+</div>
+
+<div class="row">
+
+  <div class="col-md-4">
+    <div class="card mb-3">
+      <div class="card-header">
+        Produtos
+      </div>
+
+      <div class="card-body" style="max-height: 400px; overflow:auto">
+
+        <div *ngFor="let produto of produtos" class="d-flex justify-content-between align-items-center mb-2 border-bottom pb-2">
+
+          <div>
+            <strong>{{ produto.nome }}</strong><br>
+            <small>{{ produto.preco | currency:'BRL' }}</small>
+          </div>
+
+          <button class="btn btn-sm btn-primary"
+                  (click)="adicionar(produto)">
+            +
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+
+    <div class="card mb-3">
+      <div class="card-header">
+        Carrinho
+      </div>
+
+      <div class="card-body">
+
+        <div *ngIf="carrinho.length === 0" class="text-muted">
+          Carrinho vazio
+        </div>
+
+        <div *ngFor="let item of carrinho"
+             class="d-flex justify-content-between align-items-center mb-2">
+
+          <div>
+            {{ item.quantidade }}x {{ item.produto.nome }}
+          </div>
+
+          <button class="btn btn-sm btn-danger"
+                  (click)="remover(item.produto.id)">
+            -
+          </button>
+
+        </div>
+
+        <hr>
+
+        <h5>Total: {{ total | currency:'BRL' }}</h5>
+
+      </div>
+    </div>
+
+    <div class="card">
+
+      <div class="card-header">
+        Cliente
+      </div>
+
+      <div class="card-body">
+
+        <form [formGroup]="formularioCliente"
+              (ngSubmit)="finalizarPedido()">
+
+          <div class="mb-2">
+            <input class="form-control"
+                   formControlName="nomeCliente"
+                   placeholder="Nome">
+          </div>
+
+          <div class="mb-2">
+            <input class="form-control"
+                   formControlName="emailCliente"
+                   placeholder="Email">
+          </div>
+
+          <div class="mb-2">
+            <input class="form-control"
+                   formControlName="telefoneCliente"
+                   placeholder="Telefone">
+          </div>
+
+          <div class="mb-2">
+            <input class="form-control"
+                   formControlName="observacoes"
+                   placeholder="Observações">
+          </div>
+
+          <button class="btn btn-success w-100"
+                  type="submit"
+                  [disabled]="enviando">
+            Finalizar Pedido
+          </button>
+
+        </form>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-md-4">
+
+    <div class="card">
+
+      <div class="card-header">
+        Pedidos
+      </div>
+
+      <div class="card-body" style="max-height: 600px; overflow:auto">
+
+        <div *ngIf="pedidos?.length === 0" class="text-muted">
+          Nenhum pedido
+        </div>
+
+        <div *ngFor="let pedido of pedidos"
+             class="border rounded p-2 mb-3">
+
+          <div class="mb-1">
+            <strong>{{ pedido.nomeCliente }}</strong>
+          </div>
+
+          <div>
+            Total: {{ pedido.total | currency:'BRL' }}
+          </div>
+
+          <div>
+            Status: <span class="badge bg-secondary">{{ pedido.status }}</span>
+          </div>
+
+          <ul class="mt-2 mb-2">
+            <li *ngFor="let item of pedido.itens">
+              {{ item.quantidade }}x {{ item.nomeProduto }}
+            </li>
+          </ul>
+
+          <div class="d-flex gap-2 flex-wrap">
+
+            <button
+                class="btn btn-primary"
+                *ngIf="pedido.status !== 'Concluido'"
+                (click)="proximoStatus(pedido)">
+
+                {{ pedido.status === 'Pendente'
+                    ? 'Preparar Pedido'
+                    : 'Concluir Pedido' }}
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>

@@ -35,7 +35,6 @@ namespace Padaria.ProductService.Services
 
         public async Task<CategoriaDTO> CriarAsync(CriarCategoriaDTO requisicao)
         {
-            // Verifica se já existe categoria com esse nome
             if (await _repositorio.NomeExisteAsync(requisicao.Nome))
                 throw new InvalidOperationException("Já existe uma categoria com esse nome.");
 

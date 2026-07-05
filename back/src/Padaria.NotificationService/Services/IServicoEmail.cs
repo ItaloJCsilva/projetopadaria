@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Padaria.Shared.Eventos;
 
 namespace Padaria.NotificationService.Services
 {
@@ -17,5 +18,6 @@ namespace Padaria.NotificationService.Services
             string nomeCliente,
             Guid pedidoId,
             string novoStatus);
+        Task EnviarReciboPedidoAsync(PedidoConcluidoEvento pedido);
     }
 }

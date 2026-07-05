@@ -1,5 +1,3 @@
-// Guard de autenticação
-// Bloqueia acesso a rotas que precisam de login
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';

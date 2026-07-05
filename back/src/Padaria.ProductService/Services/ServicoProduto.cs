@@ -37,7 +37,7 @@ namespace Padaria.ProductService.Services
 
             return MapearParaResposta(produto);
         }
-        public async Task<ProdutoDTO> CriarAsync(CriarProdutoDTO requisicao)
+        public async Task<ProdutoDTO> CriarAsync(CriarProdutoDTO requisicao, string? urlImagem)
         {            
             var categoria = await _repositorioCategoria.BuscarPorIdAsync(requisicao.CategoriaId);
             if (categoria is null)
@@ -50,7 +50,7 @@ namespace Padaria.ProductService.Services
                 Descricao = requisicao.Descricao,
                 Preco  = requisicao.Preco,
                 Estoque = requisicao.Estoque,
-                UrlImagem  = requisicao.UrlImagem,
+                UrlImagem = urlImagem,
                 CategoriaId = requisicao.CategoriaId,
                 Disponivel = true,
                 DataCriacao = DateTime.UtcNow

@@ -1,5 +1,3 @@
-// Serviço de produtos
-// Faz chamadas HTTP para o ProductService
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -38,4 +36,11 @@ export class ProdutoService {
   remover(id: string): Observable<void> {
     return this.http.delete<void>(`${this.url}/${id}`);
   }
+  criarComImagem(formData: FormData) {
+  return this.http.post(this.url, formData);
+}
+
+atualizarComImagem(id: string, formData: FormData) {
+  return this.http.put(`${this.url}/${id}`, formData);
+}
 }

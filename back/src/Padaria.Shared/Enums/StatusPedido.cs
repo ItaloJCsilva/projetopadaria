@@ -3,10 +3,9 @@ namespace Padaria.Shared.Enums
 {
     public enum StatusPedido
     {
-        Pendente,
-        Confirmado,
-        Pronto,
-        Concluido,
-        Cancelado
+        Pendente = 0,
+        Pronto = 1,
+        Concluido = 2
     }
+
 }

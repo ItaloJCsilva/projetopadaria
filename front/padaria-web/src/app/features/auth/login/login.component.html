@@ -2,17 +2,14 @@
   <div class="card shadow-sm" style="width: 100%; max-width: 420px;">
     <div class="card-body p-4">
 
-      <!-- Logo / Título -->
       <div class="text-center mb-4">
         <span style="font-size: 3rem;"></span>
         <h2 class="fw-bold mt-2">Padaria Online</h2>
         <p class="text-muted">Entre na sua conta</p>
       </div>
 
-      <!-- Alerta de erro -->
       <div *ngIf="erro" class="alert alert-danger">{{ erro }}</div>
 
-      <!-- Formulário -->
       <form [formGroup]="formulario" (ngSubmit)="entrar()">
 
         <div class="mb-3">

@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -14,8 +15,24 @@ using Padaria.OrderService.Services.interfaces;
 
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy =>
+    {
+        policy
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+builder.Services.AddControllers()
+    .AddJsonOptions(opcoes =>
+    {
+        opcoes.JsonSerializerOptions.PropertyNamingPolicy =
+            System.Text.Json.JsonNamingPolicy.CamelCase;
+        opcoes.JsonSerializerOptions.Converters.Add(
+            new JsonStringEnumConverter());
+    });
 builder.Services.AddDbContext<ContextoPedido>(opcoes =>
     opcoes.UseMySql(
         builder.Configuration.GetConnectionString("Padrao"),
@@ -86,6 +103,7 @@ if (app.Environment.IsDevelopment())
     });
 }
 app.UseHttpsRedirection();
+app.UseCors("Angular");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

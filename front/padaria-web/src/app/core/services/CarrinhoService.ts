@@ -1,6 +1,3 @@
-// Serviço do carrinho de compras
-// Mantém os itens em memória durante a sessão
-// Não precisa de backend — é só estado local
 import { Injectable, signal, computed } from '@angular/core';
 import { ItemCarrinho } from '../models/pedido/ItemCarrinho';
 import { Produto } from '../models/Produto';
@@ -9,18 +6,14 @@ import { Produto } from '../models/Produto';
 @Injectable({ providedIn: 'root' })
 export class CarrinhoService {
 
-  // Signal — estado reativo do carrinho
-  // Quando muda, os componentes que usam atualizam automaticamente
   private itens = signal<ItemCarrinho[]>([]);
 
-  // Computed — calculados automaticamente quando itens muda
   readonly itensCarrinho = this.itens.asReadonly();
   readonly totalItens = computed(() =>
     this.itens().reduce((acc, i) => acc + i.quantidade, 0));
   readonly totalValor = computed(() =>
     this.itens().reduce((acc, i) => acc + (i.produto.preco * i.quantidade), 0));
 
-  // Adiciona produto ou incrementa quantidade se já existe
   adicionarItem(produto: Produto): void {
     const atual = this.itens();
     const existe = atual.find(i => i.produto.id === produto.id);
@@ -36,7 +29,6 @@ export class CarrinhoService {
     }
   }
 
-  // Remove um do produto ou remove completamente se quantidade for 1
   removerItem(produtoId: string): void {
     const atual = this.itens();
     const item = atual.find(i => i.produto.id === produtoId);

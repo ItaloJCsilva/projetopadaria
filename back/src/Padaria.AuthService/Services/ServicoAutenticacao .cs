@@ -61,7 +61,7 @@ namespace Padaria.AuthService.Services
             Email= requisicao.Email,
             SenhaHash = senhaHash,
             Telefone = requisicao.Telefone,
-            Perfil = PerfilUsuario.Atendente,
+            Perfil = PerfilUsuario.Cliente,
             DataCriacao= DateTime.UtcNow.AddHours(-3),
             Ativo = true
         };

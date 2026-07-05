@@ -4,17 +4,14 @@
 
   <div class="mt-4 d-flex gap-3 justify-content-center flex-wrap">
 
-    <!-- Links para todos -->
     <a routerLink="/catalogo" class="btn btn-warning btn-lg">Ver Cardápio</a>
     <a routerLink="/carrinho" class="btn btn-outline-secondary btn-lg">🛒 Carrinho</a>
 
-    <!-- Se não estiver logado -->
     @if (!authService.estaLogado()) {
       <a routerLink="/login" class="btn btn-outline-primary btn-lg">Entrar</a>
       <a routerLink="/cadastro" class="btn btn-success btn-lg">Cadastrar</a>
     }
 
-    <!-- Se estiver logado, mostra opções de acordo com o perfil -->
     @if (authService.estaLogado()) {
       <span class="badge bg-info fs-6 align-self-center">Olá, {{ authService.obterNome() }}</span>
 

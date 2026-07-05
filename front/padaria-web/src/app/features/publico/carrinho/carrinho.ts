@@ -63,7 +63,6 @@ export class Carrinho {
     this.enviando = true;
     this.erro = '';
 
-    // Monta a requisição com os itens do carrinho
     const dados: CriarPedidoRequisicao = {
       usuarioId: null,
       nomeCliente: this.formulario.value.nomeCliente,

@@ -8,10 +8,16 @@ using Padaria.ProductService.Repositories;
 using Padaria.ProductService.Repositories.interfaces;
 using Padaria.ProductService.Services;
 using Padaria.ProductService.Services.interfaces;
+using Padaria.ProductService.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(opcoes =>
+    {
+        opcoes.JsonSerializerOptions.PropertyNamingPolicy =
+            System.Text.Json.JsonNamingPolicy.CamelCase;
+    });
 
 builder.Services.AddDbContext<ContextoProduto>(opcoes =>
     opcoes.UseMySql(
@@ -23,8 +29,8 @@ builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
 builder.Services.AddScoped<IRepositorioProduto, RepositorioProduto>();
 builder.Services.AddScoped<IServicoCategoria, ServicoCategoria>();
 builder.Services.AddScoped<IServicoProduto, ServicoProduto>();
+builder.Services.AddScoped<S3Service>();
 
-// Permite que o Angular (localhost:4200) acesse essa API
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("PermitirAngular", policy =>

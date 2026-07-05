@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Padaria.ProductService.DTOs;
 using Padaria.ProductService.Services.interfaces;
+using Padaria.ProductService.Storage;
 
 namespace Padaria.ProductService.Controllers
 {
@@ -16,9 +17,12 @@ namespace Padaria.ProductService.Controllers
     public class ControllerProduto : Controller
     {
         private readonly IServicoProduto _servico;
-        public ControllerProduto(IServicoProduto servico)
+        private readonly S3Service _s3Service;
+
+        public ControllerProduto(IServicoProduto servico, S3Service s3Service)
         {
             _servico = servico;
+            _s3Service = s3Service;
         }
 
         [HttpGet]
@@ -49,18 +53,24 @@ namespace Padaria.ProductService.Controllers
         }
         [HttpPost]
         [Authorize(Roles = "Administrador")]
-        public async Task<IActionResult> Criar([FromBody] CriarProdutoDTO requisicao)
+        public async Task<IActionResult> Criar([FromForm] CriarProdutoDTO requisicao, IFormFile? imagem)
         {
-            try
-            {
-                var produto = await _servico.CriarAsync(requisicao);
-                return CreatedAtAction(nameof(BuscarPorId),
-                    new { id = produto.Id }, produto);
-            }
-            catch (KeyNotFoundException ex)
-            {
-                return NotFound(new { mensagem = ex.Message });
-            }
+             try
+        {
+            string? urlImagem = null;
+
+            if (imagem != null)
+                urlImagem = await _s3Service.UploadAsync(imagem);
+
+            var produto = await _servico.CriarAsync(requisicao, urlImagem);
+
+            return CreatedAtAction(nameof(BuscarPorId),
+                new { id = produto.Id }, produto);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
         }
         [HttpPut("{id:guid}")]
         [Authorize(Roles = "Administrador")]
@@ -89,6 +99,20 @@ namespace Padaria.ProductService.Controllers
             {
                 return NotFound(new { mensagem = ex.Message });
             }
+        }
+
+        [HttpPost("upload-imagem")]
+        [Authorize(Roles = "Administrador")]
+        public async Task<IActionResult> UploadImagem(
+            [FromForm] IFormFile arquivo,
+            [FromServices] S3Service s3)
+        {
+            if (arquivo == null || arquivo.Length == 0)
+                return BadRequest("Arquivo inválido");
+
+            var url = await s3.UploadAsync(arquivo);
+
+            return Ok(new { url });
         }
     }
 }

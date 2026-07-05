@@ -16,11 +16,9 @@
             </div>
             <div>
               <select class="form-select form-select-sm" (change)="atualizarStatus(pedido.id, $any($event.target).value)">
-                <option value="Pendente" [selected]="pedido.status === 'Pendente'">Pendente</option>
-                <option value="Confirmado" [selected]="pedido.status === 'Confirmado'">Confirmado</option>
-                <option value="Pronto" [selected]="pedido.status === 'Pronto'">Pronto</option>
-                <option value="Concluido" [selected]="pedido.status === 'Concluido'">Concluído</option>
-                <option value="Cancelado" [selected]="pedido.status === 'Cancelado'">Cancelado</option>
+                <option value="Pendente">Pendente</option>
+                <option value="Pronto">Pronto</option>
+                <option value="Concluido">Concluído</option>
               </select>
             </div>
           </div>

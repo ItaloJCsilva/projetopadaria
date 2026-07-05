@@ -12,9 +12,7 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class LoginComponent {
 
-  // FormGroup — agrupa os campos do formulário
-  // Validators.required → campo obrigatório
-  // Validators.email → valida formato de email
+
   formulario: FormGroup;
   carregando = false;
   erro = '';
@@ -30,12 +28,10 @@ export class LoginComponent {
     });
   }
 
-  // Getter para acessar os campos no template
   get email() { return this.formulario.get('email')!; }
   get senha() { return this.formulario.get('senha')!; }
 
   entrar(): void {
-    // Se formulário inválido não submete
     if (this.formulario.invalid) {
       this.formulario.markAllAsTouched();
       return;
@@ -46,7 +42,6 @@ export class LoginComponent {
 
     this.authService.entrar(this.formulario.value).subscribe({
       next: (resposta) => {
-        // Redireciona por perfil após login
         const perfil = resposta.perfil;
         if (perfil === 'Administrador') this.router.navigate(['/admin']);
         else if (perfil === 'Atendente') this.router.navigate(['/caixa']);

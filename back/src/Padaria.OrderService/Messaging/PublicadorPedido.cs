@@ -21,5 +21,11 @@ namespace Padaria.OrderService.Messaging
 
     public async Task PublicarStatusAlteradoAsync(StatusPedidoAlteradoEvento evento)
         => await _publicador.Publish(evento);
+
+    public async Task PublicarPedidoConcluidoAsync(PedidoConcluidoEvento evento)
+    {
+        await _publicador.Publish(evento);
     }
+    }
+    
 }

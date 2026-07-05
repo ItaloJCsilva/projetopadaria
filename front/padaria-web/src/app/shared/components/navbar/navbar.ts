@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
 import { CarrinhoService } from '../../../core/services/CarrinhoService';
-import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-navbar',
@@ -15,20 +15,9 @@ export class Navbar {
 
   constructor(
     public authService: AuthService,
-    public carrinhoService: CarrinhoService,
-    private router: Router
-  ) {}
-
-  get logado(): boolean {
-    return this.authService.estaLogado();
-  }
-
-  get perfil(): string | null {
-    return this.authService.obterPerfil();
-  }
-
-  get nome(): string | null {
-    return this.authService.obterNome();
+    public carrinhoService: CarrinhoService
+  ) {
+    console.log('[Navbar] iniciou, logado:', this.authService.usuarioLogado());
   }
 
   sair(): void {

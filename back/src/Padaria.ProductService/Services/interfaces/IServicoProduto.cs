@@ -11,7 +11,7 @@ namespace Padaria.ProductService.Services.interfaces
         Task<List<ProdutoDTO>> ListarTodosAsync();
         Task<List<ProdutoDTO>> ListarPorCategoriaAsync(Guid categoriaId);
         Task<ProdutoDTO> BuscarPorIdAsync(Guid id);
-        Task<ProdutoDTO> CriarAsync(CriarProdutoDTO requisicao);
+        Task<ProdutoDTO> CriarAsync(CriarProdutoDTO requisicao, string? urlImagem);
         Task<ProdutoDTO> AtualizarAsync(Guid id, AtualizarProdutoDTO requisicao);
         Task RemoverAsync(Guid id);
     }

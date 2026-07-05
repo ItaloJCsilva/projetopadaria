@@ -7,7 +7,7 @@ export interface Pedido {
   emailCliente: string;
   telefoneCliente: string;
   tipo: 'Online' | 'Local';
-  status: 'Pendente' | 'Confirmado' | 'Pronto' | 'Concluido' | 'Cancelado';
+  status: 'Pendente' | 'Pronto' | 'Concluido';
   total: number;
   observacoes: string | null;
   criadoEm: string;

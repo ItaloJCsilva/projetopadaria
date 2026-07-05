@@ -17,7 +17,7 @@ export class PedidoService {
   }
 
   listarMeus(): Observable<Pedido[]> {
-    return this.http.get<Pedido[]>(`${this.url}/meus`);
+    return this.http.get<Pedido[]>(`${this.url}/meus-pedidos`);
   }
 
   listarPorStatus(status: string): Observable<Pedido[]> {
@@ -32,11 +32,26 @@ export class PedidoService {
     return this.http.post<Pedido>(this.url, dados);
   }
 
-  atualizarStatus(id: string, dados: AtualizarStatusRequisicao): Observable<Pedido> {
-    return this.http.put<Pedido>(`${this.url}/${id}/status`, dados);
-  }
+  atualizarStatus(
+      id: string,
+      dados: AtualizarStatusRequisicao
+  ): Observable<Pedido> {
 
-  cancelar(id: string): Observable<void> {
-    return this.http.delete<void>(`${this.url}/${id}`);
+      return this.http.put<Pedido>(
+          `${this.url}/${id}/status`,
+          dados
+      );
   }
+  // cancelar(id: string): Observable<void> {
+  //   return this.http.delete<void>(`${this.url}/${id}`);
+  // }
+  // concluir(id: string): Observable<void> {
+  // return this.http.put<void>(`${this.url}/${id}/concluir`, {});
+  // }
+  listarAtivos(): Observable<Pedido[]> {
+    return this.http.get<Pedido[]>(`${this.url}/ativos`);
+  }
+  // confirmar(id: string): Observable<void> {
+  // return this.http.put<void>(`${this.url}/${id}/confirmar`, {});
+
 }

@@ -1,6 +1,3 @@
-// Interceptor de autenticação
-// Adiciona o token JWT em TODAS as requisições HTTP automaticamente
-// Sem isso precisaria adicionar o header manualmente em cada chamada
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';

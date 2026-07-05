@@ -4,7 +4,6 @@
   @if (erro) { <div class="alert alert-danger">{{ erro }}</div> }
   @if (sucesso) { <div class="alert alert-success">{{ sucesso }}</div> }
 
-  <!-- Formulário -->
   <div class="card shadow-sm mb-4">
     <div class="card-body">
       <h5 class="fw-bold">{{ editandoId ? 'Editar' : 'Novo' }} Produto</h5>
@@ -27,8 +26,20 @@
             <input type="text" class="form-control" formControlName="descricao">
           </div>
           <div class="col-md-6">
-            <label class="form-label">URL da Imagem</label>
-            <input type="text" class="form-control" formControlName="urlImagem">
+            <label class="form-label">Imagem do Produto</label>
+
+            <input type="file"
+                  class="form-control"
+                  (change)="onFileSelected($event)"
+                  accept="image/*">
+          </div>
+
+          <div class="col-md-6" *ngIf="previewUrl">
+            <label class="form-label">Pré-visualização</label>
+            <img
+              [src]="previewUrl"
+              class="img-thumbnail"
+              style="max-height:150px;object-fit:cover">
           </div>
           <div class="col-md-6">
             <label class="form-label">Categoria</label>
@@ -58,7 +69,6 @@
     </div>
   </div>
 
-  <!-- Lista -->
   @if (carregando) {
     <div class="spinner-border text-warning"></div>
   } @else {
@@ -67,6 +77,7 @@
         <thead>
           <tr>
             <th>Nome</th>
+            <th>Imagem</th>
             <th>Preço</th>
             <th>Estoque</th>
             <th>Categoria</th>
@@ -78,6 +89,18 @@
           @for (p of produtos; track p.id) {
             <tr>
               <td>{{ p.nome }}</td>
+              <td>
+                <img
+                    *ngIf="p.urlImagem"
+                    [src]="p.urlImagem"
+                    width="70"
+                    height="70"
+                    style="object-fit:cover;border-radius:8px">
+
+                <span *ngIf="!p.urlImagem">
+                    Sem imagem
+                </span>
+              </td>
               <td>R$ {{ p.preco.toFixed(2) }}</td>
               <td>{{ p.estoque }}</td>
               <td>{{ p.nomeCategoria }}</td>

@@ -16,5 +16,7 @@ namespace Padaria.OrderService.Repositories.interfaces
         Task AdicionarAsync(Pedido pedido);
         Task AtualizarAsync(Pedido pedido);
         Task SalvarAsync();
+        Task<List<Pedido>> ListarAtivosAsync();
+        
     }
 }

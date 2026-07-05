@@ -16,7 +16,6 @@
   @if (carrinhoService.itensCarrinho().length > 0) {
     <div class="row">
 
-      <!-- Lista de itens -->
       <div class="col-lg-7">
         @for (item of carrinhoService.itensCarrinho(); track item.produto.id) {
           <div class="card mb-2 shadow-sm">
@@ -44,7 +43,6 @@
         </div>
       </div>
 
-      <!-- Formulário de dados do cliente -->
       <div class="col-lg-5">
         <div class="card shadow-sm">
           <div class="card-body">

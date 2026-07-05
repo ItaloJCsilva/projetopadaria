@@ -22,10 +22,38 @@
               <span class="ms-3">Tipo: {{ pedido.tipo }}</span>
             </div>
             <ul class="mt-2 mb-0 small">
+
               @for (item of pedido.itens; track item.id) {
-                <li>{{ item.nomeProduto }} x{{ item.quantidade }} – R$ {{ item.subtotal.toFixed(2) }}</li>
+
+                <li>
+
+                  {{ item.nomeProduto }}
+
+                  x{{ item.quantidade }}
+
+                  –
+
+                  R$ {{ item.subtotal.toFixed(2) }}
+
+                </li>
+
               }
+
             </ul>
+            @if (pedido.status === 'Pronto') {
+            <div class="mt-3">
+
+                <button
+                    class="btn btn-success"
+                    (click)="concluirPedido(pedido.id)">
+
+                    Recebi meu pedido
+
+                </button>
+
+            </div>
+
+            }
           </div>
         }
       </div>
